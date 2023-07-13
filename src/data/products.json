@@ -1,0 +1,12 @@
+[
+	{
+		"pid": 4,
+		"title": "Product 6427",
+		"description": "Description 4425",
+		"price": 1220,
+		"thumbnail": "./img/produto.jpg",
+		"code": "9729-4564",
+		"stock": 18,
+		"category": "category 2242"
+	}
+]
