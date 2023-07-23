@@ -41,7 +41,7 @@ function updateproduct(productsList) {
 
     // Crear la fila de encabezado
     const headerRow = document.createElement("tr");
-    const headers = ["ID", "img", "Title", "Price", "Code", "Category", "Stock"];
+    const headers = ["ID", "img", "Nombre del producto", "Precio", "Codigo", "Categoria", "Stock"];
     headers.forEach((headerText) => {
         const headerCell = document.createElement("th");
         headerCell.textContent = headerText;

@@ -1,1 +1,132 @@
-[{"pid":1,"title":"Zapatilla Reebok Nano X3 Negro","description":"Description 4425","price":60.099,"thumbnail":"https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/z/a/zapatillas-entrenamiento-reebok-nano-x3-negra-80628013-111010hp6042001-1.jpg","code":"729-4564","stock":8,"category":"Entrenamiento"},{"pid":2,"title":"Zapatilla Reebok NanoFlex 2.0 Gris","description":"Description 4425","price":26.299,"thumbnail":"https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/z/a/zapatillas-entrenamiento-reenok-nanoflex-tr-2-0-gris-111010gy6211001-1.jpg","code":"929-4564","stock":18,"category":"Entrenamiento"},{"pid":3,"title":"Campera Rompevientos Reebok Classics","description":"Description 4425","price":26.299,"thumbnail":"https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/c/a/campera-rompeviento-reebok-classics-vector-unisex-azul-111020h54456001-1.jpg","code":"979-4564","stock":18,"category":"Entrenamiento"},{"pid":4,"title":"Pantalon Reebok Wor Piping","description":"Description 4425","price":16.299,"thumbnail":"https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/p/a/pantalon-reebok-wor-piping-gris-111020ha9021001-1.jpg","code":"972-4564","stock":18,"category":"Moda"},{"pid":5,"title":"Calza Cardi B","description":"Description 4425","price":12.639,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/179801-1532-1532?v=1776187493&width=1532&height=1532&aspect=true","code":"9729-564","stock":7,"category":"Moda"},{"pid":6,"title":"Campera Tape Pack","description":"Description 4425","price":16.799,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/175507-1532-1532?v=1776535591&width=1532&height=1532&aspect=true","code":"9729-464","stock":4,"category":"Moda"},{"pid":7,"title":"Zapatillas Legacy Lifter III","description":"Description 4425","price":76.299,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/185243-1532-1532?v=1776444305&width=1532&height=1532&aspect=trueg","code":"9729-454","stock":5,"category":"Entrenamiento"},{"pid":8,"title":"Top Modern Safari","description":"Description 4425","price":8.399,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/175802-1532-1532?v=1776187061&width=1532&height=1532&aspect=true","code":"9729-456","stock":6,"category":"Entrenamiento"},{"pid":9,"title":"Buzo Kung Fu Panda","description":"Description 4425","price":19.359,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/173483-1532-1532?v=1776187744&width=1532&height=1532&aspect=true","code":"8729-4564","stock":18,"category":"Moda"},{"pid":10,"title":"Remera Grafica Pride","description":"Description 4425","price":9279,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/170914-1532-1532?v=1776355926&width=1532&height=1532&aspect=true","code":"9229-4564","stock":4,"category":"Moda"},{"pid":11,"title":"Pantalon Corto Workout Reebok","description":"Description 4425","price":9.279,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/156376-1532-1532?v=1776520763&width=1532&height=1532&aspect=true","code":"9769-4564","stock":4,"category":"Entrenamiento"},{"pid":12,"title":"Buzo workout Ready","description":"Description 4425","price":15.999,"thumbnail":"https://reebokarg.vtexassets.com/arquivos/ids/166009-1532-1532?v=1776271258&width=1532&height=1532&aspect=true","code":"9725-4564","stock":10,"category":"Moda"}]
+[
+	{
+		"pid": 1,
+		"title": "Zapatilla Reebok Nano X3 Negro",
+		"description": "Description 4425",
+		"price": 60.099,
+		"thumbnail": "https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/z/a/zapatillas-entrenamiento-reebok-nano-x3-negra-80628013-111010hp6042001-1.jpg",
+		"code": "729-4564",
+		"stock": 8,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 2,
+		"title": "Zapatilla Reebok NanoFlex 2.0 Gris",
+		"description": "Description 4425",
+		"price": 26.299,
+		"thumbnail": "https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/z/a/zapatillas-entrenamiento-reenok-nanoflex-tr-2-0-gris-111010gy6211001-1.jpg",
+		"code": "929-4564",
+		"stock": 18,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 3,
+		"title": "Campera Rompevientos Reebok Classics",
+		"description": "Description 4425",
+		"price": 26.299,
+		"thumbnail": "https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/c/a/campera-rompeviento-reebok-classics-vector-unisex-azul-111020h54456001-1.jpg",
+		"code": "979-4564",
+		"stock": 18,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 4,
+		"title": "Pantalon Reebok Wor Piping",
+		"description": "Description 4425",
+		"price": 16.299,
+		"thumbnail": "https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/p/a/pantalon-reebok-wor-piping-gris-111020ha9021001-1.jpg",
+		"code": "972-4564",
+		"stock": 18,
+		"category": "Moda"
+	},
+	{
+		"pid": 5,
+		"title": "Calza Cardi B",
+		"description": "Description 4425",
+		"price": 12.639,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/179801-1532-1532?v=1776187493&width=1532&height=1532&aspect=true",
+		"code": "9729-564",
+		"stock": 7,
+		"category": "Moda"
+	},
+	{
+		"pid": 6,
+		"title": "Campera Tape Pack",
+		"description": "Description 4425",
+		"price": 16.799,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/175507-1532-1532?v=1776535591&width=1532&height=1532&aspect=true",
+		"code": "9729-464",
+		"stock": 4,
+		"category": "Moda"
+	},
+	{
+		"pid": 7,
+		"title": "Zapatillas Legacy Lifter III",
+		"description": "Description 4425",
+		"price": 76.299,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/185243-1532-1532?v=1776444305&width=1532&height=1532&aspect=trueg",
+		"code": "9729-454",
+		"stock": 5,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 8,
+		"title": "Top Modern Safari",
+		"description": "Description 4425",
+		"price": 8.399,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/175802-1532-1532?v=1776187061&width=1532&height=1532&aspect=true",
+		"code": "9729-456",
+		"stock": 6,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 9,
+		"title": "Buzo Kung Fu Panda",
+		"description": "Description 4425",
+		"price": 19.359,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/173483-1532-1532?v=1776187744&width=1532&height=1532&aspect=true",
+		"code": "8729-4564",
+		"stock": 18,
+		"category": "Moda"
+	},
+	{
+		"pid": 10,
+		"title": "Remera Grafica Pride",
+		"description": "Description 4425",
+		"price": 9279,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/170914-1532-1532?v=1776355926&width=1532&height=1532&aspect=true",
+		"code": "9229-4564",
+		"stock": 4,
+		"category": "Moda"
+	},
+	{
+		"pid": 11,
+		"title": "Pantalon Corto Workout Reebok",
+		"description": "Description 4425",
+		"price": 9.279,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/156376-1532-1532?v=1776520763&width=1532&height=1532&aspect=true",
+		"code": "9769-4564",
+		"stock": 4,
+		"category": "Entrenamiento"
+	},
+	{
+		"pid": 12,
+		"title": "Buzo workout Ready",
+		"description": "Description 4425",
+		"price": 15.999,
+		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/166009-1532-1532?v=1776271258&width=1532&height=1532&aspect=true",
+		"code": "9725-4564",
+		"stock": 10,
+		"category": "Moda"
+	},
+	{
+		"pid": 13,
+		"title": "hola",
+		"description": "hola",
+		"price": "5213",
+		"code": "1a22d5a",
+		"category": "Moda",
+		"stock": "5",
+		"thumbnail": "notiene.com"
+	}
+]

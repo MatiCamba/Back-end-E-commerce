@@ -66,6 +66,7 @@ body {
     width: 90%;
     border-collapse: collapse;
     margin: 0 auto;
+    background-color: #e3ac78;
 }
 
 .product-table th,
@@ -94,6 +95,7 @@ body {
     font-size: 15px;
     line-height: 24px;
     color: #370d00;
+    margin-top: 5rem;
 }
 
 .site-footer hr {
@@ -242,7 +244,7 @@ body {
     background-color: #007bb6
 }
 
-.social-icons a.dribbble:hover {
+.social-icons a.instagram:hover {
     background-color: #ea4c89
 }
 
