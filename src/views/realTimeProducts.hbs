@@ -1,0 +1,31 @@
+<h2>Agregar Productos</h2>
+
+<form id="formProduct">
+    <h2>Agregar Producto</h2>
+    <input class="controls" type="text" name="title" id="title" placeholder="Titulo del Producto" required>
+    <input class="controls" type="text" name="description" id="description" placeholder="Descripcion" required>
+    <input class="controls" type="number" name="stock" id="stock" placeholder="stock" required>
+    <input class="controls" type="text" name="thumbnail" id="thumbnail" placeholder="url de la imagen" required>
+    <input class="controls" type="text" name="category" id="category" placeholder="Categoria" required>
+    <input class="controls" type="number" name="price" id="price" placeholder="Precio" required>
+    <input class="controls" type="text" name="code" id="code" placeholder="Codigo" required>
+    <div class="d-grid gap-2">
+        <button class="btn btn-success" type="submit" id="add-btn">Agregar</button>
+    </div>
+    <br>
+    <h2> Eliminar un producto:</h2>
+    <input class="controls" type="number" name="id-prod" id="id-prod" placeholder="Ingrese ID">
+    <div class="d-grid gap-2">
+        <button class="btn btn-danger" type="button" id="delete-btn">Eliminar</button>
+    </div>
+
+</form>
+
+
+<h3>Lista de Productos</h3>
+<article id="list-products">
+
+</article>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>

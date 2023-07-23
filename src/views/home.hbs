@@ -1,0 +1,26 @@
+<h2>Lista de Productos</h2>
+
+<div class="container text-center">
+    {{#each products}}
+
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img src="{{this.thumbnail}}" class="rounded mx-auto d-block" style="width: 18rem;" alt="150px">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">${{this.price}}</p>
+                    <p>Stock: {{this.stock}}</p>
+                    <button type="button" class="btn btn-dark">Ver más</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{/each}}
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
