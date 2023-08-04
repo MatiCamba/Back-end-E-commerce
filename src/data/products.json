@@ -41,7 +41,7 @@
 	},
 	{
 		"pid": 5,
-		"title": "Calza Cardi B",
+		"title": "Calza Cardi B", 
 		"description": "Description 4425",
 		"price": 12.639,
 		"thumbnail": "https://reebokarg.vtexassets.com/arquivos/ids/179801-1532-1532?v=1776187493&width=1532&height=1532&aspect=true",
@@ -121,12 +121,12 @@
 	},
 	{
 		"pid": 13,
-		"title": "hola",
-		"description": "hola",
-		"price": "5213",
-		"code": "1a22d5a",
+		"title": "Campera con Capucha",
+		"description": "No tiene",
+		"price": "5289",
+		"code": "8452ggd",
 		"category": "Moda",
-		"stock": "5",
-		"thumbnail": "notiene.com"
+		"stock": 5,
+		"thumbnail": "https://media.solodeportes.com.ar/media/catalog/product/cache/faae2c37ab1d315e4b697a7f62b421b7/c/a/campera-con-capucha-reebok-entrenamiento-identy-mujer-negra-111020gl2561001-1-1.jpg"
 	}
 ]

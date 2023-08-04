@@ -6,10 +6,13 @@ import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import { __dirname } from './utils.js';
 import path from 'path';
-import ProductManager from './dao/productsManager.js';
+import { ProductsMongo } from './dao/managers/mongo/productsMongo.js';
+import { CartManager } from './dao/managers/mongo/cartMongo.js';
+import { config } from './config/config.js';
+import { connectDB } from './config/dbConnection.js';
+import { chatModel } from './dao/models/chat.model.js';
 
-const puerto = 8080;
-
+const puerto = config.server.port;
 // Crea una aplicación Express
 const app = express();
 
@@ -30,11 +33,16 @@ const servidorHttp = app.listen(puerto, () => {
     console.log(`Aplicación de ejemplo escuchando en el puerto ${puerto}`);
 });
 
+//Conexion a la base de datos
+connectDB();
+
 // Crea un servidor Socket.IO
 const servidorSocket = new Server(servidorHttp);
 
 // Crea una instancia de ProductManager
-const administradorProductosSocket = new ProductManager('products.json');
+const administradorProductosSocket = new ProductsMongo();
+
+let messages=[];
 
 // Maneja las conexiones de sockets
 servidorSocket.on("connection", async (socket) => {
@@ -42,19 +50,41 @@ servidorSocket.on("connection", async (socket) => {
 
     // Envía la lista de productos al cliente
     const listaProductos = await administradorProductosSocket.getProducts();
-    socket.emit("sendProducts", listaProductos);
+    servidorSocket.emit("sendProducts", listaProductos);
 
     // Maneja el evento 'addProduct'
-    socket.on("addProduct", async (producto) => {
-        await administradorProductosSocket.addProduct(producto);
-        socket.emit("sendProducts", await administradorProductosSocket.getProducts());
+    socket.on("addProduct", async (product) => {
+        await administradorProductosSocket.addProduct(product);
+        console.log(administradorProductosSocket.addProduct(product));
+        const listaProductosActualizada = await administradorProductosSocket.getProducts();
+        servidorSocket.emit("sendProducts", listaProductosActualizada);
     });
 
     // Maneja el evento 'deleteProduct'
-    socket.on("deleteProduct", async (pid) => {
-        await administradorProductosSocket.deleteProduct(pid);
-        socket.emit("sendProducts", await administradorProductosSocket.getProducts());
+    socket.on("deleteProduct", async (id) => {
+        console.log(id);
+        await administradorProductosSocket.deleteProduct(id);
+        const listaProductosActualizada = await administradorProductosSocket.getProducts({});
+        servidorSocket.emit("sendProducts", listaProductosActualizada);
     });
+
+    console.log("nuevo cliente conectado");
+
+    // Maneja el evento 'authenticated'
+    socket.on("authenticated", async (msg)=>{
+        const messages = await chatModel.find();
+        socket.emit("messageHistory", messages);
+        socket.broadcast.emit("newUser",msg);
+    });
+
+    //recibir el mensaje del cliente
+    socket.on("message",async(data)=>{
+        console.log("data", data);
+        const messageCreated = await chatModel.create(data);
+        const messages = await chatModel.find();
+        //cada vez que recibamos este mensaje, enviamos todos los mensajes actualizados a todos los clientes conectados
+        servidorSocket.emit("messageHistory", messages);
+    })
 });
 
 // Rutas
