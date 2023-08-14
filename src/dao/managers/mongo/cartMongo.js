@@ -1,77 +1,94 @@
-import mongoose from "mongoose";
+import { cartModel } from "../../models/carts.model.js";
 
-export class CartManager {
-    // obtener todos los carritos
-    async getCarts() {
+export class CartMongo {
+    constructor() {
+        this.model = cartModel;
+    }
+
+    // Obtener todos los carritos
+    getCarts = async () => {
         try {
-            return await cartModel.find().lean();
-        } catch (error) {
-            throw new Error("Hubo un error al obtener los carritos", error.message);
+            const carts = await this.model.find().lean();
+            return carts;
+        } catch (err) {
+            console.error('Error al obtener los carritos:', err.message);
             return [];
         }
     };
 
-    // obtener un carrito por su ID
-    async getCartById(id) {
+
+    // Obtener un carrito por ID
+    getCartById = async (cartId) => {
         try {
-            return await cartModel.findById(id);
-        }
-        catch (error) {
-            throw new Error("Hubo un error al obtener el carrito", error.message);
+            const cart = await this.model.findById(cartId)
+            return cart;
+        } catch (err) {
+            console.error('Error al obtener el carrito por ID:', err.message);
+            return err;
         }
     };
 
-    // agregar un carrito
-    async addCart(cart) {
+
+    // Agregar un carrito
+    addCart = async (products) => {
         try {
             let cartData = {};
-
-            if (cart.products.length > 0) {
-                cartData = { $set: cart };
+            if (products && products.length > 0) {
+                cartData.products = products;
             }
 
-            const cartCreated = await cartModel.create(cartData);
-            return cartCreated;
-        } catch (error) {
-            throw new Error("Hubo un error al agregar el carrito", error.message);
+            const cart = await this.model.create(cartData);
+            return cart;
+        } catch (err) {
+            console.error('Error al crear el carrito:', err.message);
+            return err;
         }
     };
 
-    async addProductInCart (cid, obj) {
+
+    // Agregar un producto a un carrito existente
+    addProductInCart = async (cid, obj) => {
         try {
             const filter = { _id: cid, "products._id": obj._id };
-            const cart = await cartModel.findOne(filter);
+            const cart = await this.model.findById(cid);
+            const findProduct = cart.products.some((product) => product._id.toString() === obj._id);
 
-            if(!cart) {
-                throw new Error("El carrito no existe");
+            if (findProduct) {
+                // Si el producto ya existe en el carrito, se actualiza la cantidad
+                const update = { $inc: { "products.$.quantity": obj.quantity } };
+                await this.model.updateOne(filter, update);
             } else {
-                cart.products.push(obj);
-                await cart.save();
-                return cart;}
-            
-        } catch (error) {
-            throw new Error("Hubo un error al agregar el producto", error.message);
+                // Si el producto no existe en el carrito, se agrega
+                const update = { $push: { products: { _id: obj._id, quantity: obj.quantity } } };
+                await this.model.updateOne({ _id: cid }, update);
+            }
+
+            return await this.model.findById(cid);
+        } catch (err) {
+            console.error('Error al agregar el producto al carrito:', err.message);
+            return err;
         }
     };
 
-    // Borrar un carrito
-    async deleteCart(id) {
+    // Eliminar un producto de un carrito
+    deleteProductInCart = async (cid, products) => {
         try {
-            return await cartModel.findByIdAndDelete(id);
-        }
-        catch (error) {
-            throw new Error("Hubo un error al eliminar el carrito", error.message);
-        }
-    };
+            return await this.model.findOneAndUpdate(
+                { _id: cid },
+                { products },
+                { new: true })
 
-    // actualizar un carrito
-    async updateCart(id, cart) {
-        try {
-            return await cartModel.findByIdAndUpdate(id, { $set: cart});
+        } catch (err) {
+            return err
         }
-        catch (error) {
-            throw new Error("Hubo un error al actualizar el carrito", error.message);
-        }
-    };
 
-};
+    }
+
+    // Actualizar un producto en un carrito
+    updateOneProduct = async (cid, products) => {
+        await this.model.updateOne(
+            { _id: cid },
+            { products })
+        return await this.model.findOne({ _id: cid })
+    }
+}

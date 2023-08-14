@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { __dirname } from '../../../utils.js';
 
-class CartManager {
+export class CartManager {
     constructor(filePath) {
         this.path = path.join(__dirname, `/data/${filePath}`);
     }
@@ -116,7 +116,7 @@ class CartManager {
     }
 }
 
-export default CartManager;
+
 
 
 

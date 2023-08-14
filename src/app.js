@@ -7,9 +7,8 @@ import { Server } from 'socket.io';
 import { __dirname } from './utils.js';
 import path from 'path';
 import { ProductsMongo } from './dao/managers/mongo/productsMongo.js';
-import { CartManager } from './dao/managers/mongo/cartMongo.js';
+import { CartMongo } from './dao/managers/mongo/cartMongo.js';
 import { config } from './config/config.js';
-import { connectDB } from './config/dbConnection.js';
 import { chatModel } from './dao/models/chat.model.js';
 
 const puerto = config.server.port;
@@ -32,9 +31,6 @@ app.set('views', path.join(__dirname, '/views'));
 const servidorHttp = app.listen(puerto, () => {
     console.log(`Aplicación de ejemplo escuchando en el puerto ${puerto}`);
 });
-
-//Conexion a la base de datos
-connectDB();
 
 // Crea un servidor Socket.IO
 const servidorSocket = new Server(servidorHttp);

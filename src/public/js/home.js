@@ -61,3 +61,33 @@ socketClient.on("newUser", (data) => {
         });
     }
 });
+
+function addToCart(productId) {
+    // Crear el objeto del producto a agregar al carrito
+    const product = {
+        _id: productId,
+        quantity: 1
+    };
+
+    // Realizar la solicitud POST al servidor
+    fetch('http://localhost:8080/api/carritos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ products: [product] })
+    })
+    .then(response => {
+        if (response.ok) {
+            // El producto fue agregado exitosamente al carrito
+            alert('El producto fue agregado al carrito');
+        } else {
+            // Hubo un error al agregar el producto al carrito
+            alert('Hubo un error al agregar el producto al carrito');
+        }
+    })
+    .catch(error => {
+        // Hubo un error en la solicitud
+        console.error('Error en la solicitud:', error);
+    });
+};

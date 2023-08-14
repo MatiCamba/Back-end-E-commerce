@@ -1,8 +1,7 @@
 import { Router } from "express"
-//import ProductsManager from "../dao/managers/fileSystem/productsManager.js";
-import  { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
+import { productsService } from "../dao/managers/index.js";
 
-const productsService = new ProductsMongo();
+
 
 const validateFields = (req, res, next) => {
     const { title, description, price, code, thumbnail, stock, category } = req.body;

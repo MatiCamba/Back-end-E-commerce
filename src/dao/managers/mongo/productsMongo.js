@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { productsModel } from "../../models/products.model.js";
+import { query } from "express";
 
 export class ProductsMongo {
     constructor() {
@@ -14,6 +15,15 @@ export class ProductsMongo {
             throw new Error("Hubo un error al obtener los productos", error.message);
         }
     };
+
+    // obtner x productos por paginacion
+    async getProductsByPage(query, options) {
+        try {
+            return await this.model.paginate(query, options);
+        } catch (error) {
+            throw new Error("Hubo un error al obtener los productos", error.message);
+        }
+    }
 
     // obtener un producto por su ID
     async getProductById(id) {

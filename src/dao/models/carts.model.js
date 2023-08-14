@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
+import { cartCollection } from "../../constants/index.js";
 
-// Creamos la coleccion
-const cartCollection = "carts";
 
 // Creamos el esquema
 const cartSchema = new mongoose.Schema({
@@ -9,7 +8,8 @@ const cartSchema = new mongoose.Schema({
         type:[
             {
                 _id: {
-                    type: mongoose.types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId,
+
                     ref: 'products',
                 },
                 quantity: {
