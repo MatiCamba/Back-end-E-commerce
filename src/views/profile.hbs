@@ -1,0 +1,21 @@
+
+<div class="card border-primary mx-auto mb-3" style="max-width: 540px;">
+    <div class="row g-0 p-4">
+        <div class="col-md-4 my-auto ">
+            <img src="https://robohash.org/88b60b04361356a25110e8e118adeacb?set=set4&bgset=&size=400x400" class="img-thumbnail mx-auto" alt="Avatar">
+        </div>
+        <div class="col-md-8 p-4">
+            <div class="card-body">
+                <div class="card-header">Tu Perfil</div>
+                <br>
+                <p class="card-text"><strong>Nombre:</strong> {{user.first_name}}</p>
+                
+                <p class="card-text"><strong>Apellido:</strong> {{user.last_name}}</p>
+                
+                <p class="card-text"><strong>Email:</strong> {{user.email}}</p>
+            </div>
+            <button type="button" class="btn btn-outline-warning">Editar</button>
+            <a role="button" href="api/sessions/logout"  class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
+</div>

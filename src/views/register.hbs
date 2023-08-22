@@ -1,4 +1,5 @@
 <h2>Registrarse</h2>
+<p style="color: crimson;">{{error}}</p>
 
 
 
@@ -6,29 +7,29 @@
     <div class="card-header mb-3 text-center bg-dark text-white fw-bold fs-4 ">
         Crea tu Cuenta
     </div>
-    <form>
+    <form method="post" action="/api/sessions/register" >
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="text" name="first_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="text" name="last_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1">
         </div>
 
         <button type="submit" class="btn btn-outline-light text-black fw-bold w-100" >Registrarme</button>
-        <a type="button" role="button" href="http://localhost:8080/login" class="btn btn-link position-relative">Ya tengo una cuenta</a>
+        <a type="button" role="button" href="/login" class="btn btn-link position-relative">Ya tengo una cuenta</a>
     </form>
 
 </div>

@@ -9,6 +9,7 @@ export class CartMongo {
     getCarts = async () => {
         try {
             const carts = await this.model.find().lean();
+            console.log(carts)
             return carts;
         } catch (err) {
             console.error('Error al obtener los carritos:', err.message);

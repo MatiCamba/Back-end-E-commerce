@@ -2,6 +2,7 @@ import express from 'express';
 import { productsRoute } from './routes/products.routes.js';
 import { cartsRoute } from './routes/carts.routes.js';
 import { viewRouter } from './routes/view.routes.js';
+import { sessionRouter } from './routes/sessions.routes.js';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import { __dirname } from './utils.js';
@@ -10,6 +11,8 @@ import { ProductsMongo } from './dao/managers/mongo/productsMongo.js';
 import { CartMongo } from './dao/managers/mongo/cartMongo.js';
 import { config } from './config/config.js';
 import { chatModel } from './dao/models/chat.model.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 const puerto = config.server.port;
 // Crea una aplicación Express
@@ -26,6 +29,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, '/views'));
+
+// Configura la sesión
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: config.mongo.url,
+    }),
+    secret: config.server.secretSession,
+    resave: true,
+    saveUninitialized: true,
+}));
 
 // Inicia el servidor HTTP
 const servidorHttp = app.listen(puerto, () => {
@@ -86,7 +99,8 @@ servidorSocket.on("connection", async (socket) => {
 // Rutas
 app.use("/api/productos", productsRoute);
 app.use("/api/carritos", cartsRoute);
-app.use("/", viewRouter);
+app.use("/api/sessions", sessionRouter);
+app.use(viewRouter);
 
 
 

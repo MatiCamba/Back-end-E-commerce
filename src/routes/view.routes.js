@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 import { productsService } from "../dao/managers/index.js";
+import { checkUserAuth } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -34,7 +35,7 @@ router.get("/", async (req, res) => {
             hasNextPage: result.hasNextPage,
             nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         }
-        console.log(resultProductsView);
+        //console.log(resultProductsView);
 
         res.render("home", resultProductsView );
     } catch (error) {
@@ -57,6 +58,11 @@ router.get("/register", (req, res) => {
 
 router.get("/cart", (req, res) => {
     res.render("cart");
+});
+
+router.get("/perfil", checkUserAuth, (req, res) => {
+    console.log(req.session);
+    res.render("profile", { user: req.session.userInfo });
 });
 
 export { router as viewRouter };

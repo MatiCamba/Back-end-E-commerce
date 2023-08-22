@@ -80,7 +80,16 @@ function addToCart(productId) {
     .then(response => {
         if (response.ok) {
             // El producto fue agregado exitosamente al carrito
-            alert('El producto fue agregado al carrito');
+            //alert('El producto fue agregado al carrito');
+            Swal.fire({
+                position: 'bottom-end',
+                icon: 'success',
+                title: 'Producto Agregado al Carrito',
+                showConfirmButton: false,
+                timer: 1500,
+                width: 300,
+                height: 100
+            })
         } else {
             // Hubo un error al agregar el producto al carrito
             alert('Hubo un error al agregar el producto al carrito');
