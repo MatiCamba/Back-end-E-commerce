@@ -17,7 +17,7 @@ export class UsersMongo {
     // Metodo para obtener usuario por Id
     async getUserById(id){
         try {
-            const user = await this.model.findById(id);
+            const user = await this.model.findById(id).lean();
             if(!user){
                 throw new Error("El usuario no existe");
             }
@@ -41,5 +41,15 @@ export class UsersMongo {
             throw new Error("Hubo un error al obtener el usuario", error.message);
         }
     };
+
+    //actualizar el usuario
+    async updateUser(id, user){
+        try {
+            return await this.model.findByIdAndUpdate(id, user);
+            
+        } catch (error) {
+            throw new Error("Hubo un error al actualizar el usuario", error.message);
+        }
+    }
 
 };

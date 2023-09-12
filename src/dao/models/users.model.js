@@ -23,6 +23,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'carts'
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ['admin', 'user'],
+        default: 'user'
     }
 });
 

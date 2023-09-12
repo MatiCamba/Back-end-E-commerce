@@ -56,16 +56,23 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <i class="bi bi-person-circle"> Ingresar</i>
+                            <i class="bi bi-person-circle">
+                                {{#if user}}
+                                    Bienvenido, {{user.first_name}}
+                                {{else}}
+                                    Ingresar
+                                {{/if}}
+                            </i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/login">Ya tengo Cuenta</a></li>
-                            <li><a class="dropdown-item" href="/register">Registrarme</a></li>
-                            <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/api/sessions/logout"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
+                            {{#if user}}
+                                    <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                                    <hr class="dropdown-divider">
+                                    <li><a class="dropdown-item" href="/api/sessions/logout"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
+                                {{else}}
+                                    <li><a class="dropdown-item" href="/login">Ya tengo Cuenta</a></li>
+                                    <li><a class="dropdown-item" href="/register">Registrarme</a></li>
+                                {{/if}}
                         </ul>
                     </li>
                     <li>

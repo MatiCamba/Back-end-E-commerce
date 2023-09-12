@@ -2,7 +2,6 @@ import { Router } from "express"
 import { productsService } from "../dao/managers/index.js";
 
 
-
 const validateFields = (req, res, next) => {
     const { title, description, price, code, thumbnail, stock, category } = req.body;
     if (!title || !description || !price || !code || !thumbnail || !stock || !category) {

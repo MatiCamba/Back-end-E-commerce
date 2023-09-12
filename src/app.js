@@ -13,6 +13,8 @@ import { config } from './config/config.js';
 import { chatModel } from './dao/models/chat.model.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import passport from 'passport';
+import { initializePassport } from './config/passport.config.js';
 
 const puerto = config.server.port;
 // Crea una aplicación Express
@@ -39,6 +41,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
 }));
+
+// configuracion de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Inicia el servidor HTTP
 const servidorHttp = app.listen(puerto, () => {

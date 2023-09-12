@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 import { productsService } from "../dao/managers/index.js";
-import { checkUserAuth } from "../middlewares/auth.js";
+import { checkUserAuth, showLoginView } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -37,27 +37,27 @@ router.get("/", async (req, res) => {
         }
         //console.log(resultProductsView);
 
-        res.render("home", resultProductsView );
+        res.render("home", {...resultProductsView, user: req.session.userInfo});
     } catch (error) {
         const products = await productManager.getProducts();
-        res.render("home", { products });
+        res.render("home", { products } , {user: req.session.userInfo});
     }
 });
 
 router.get("/realTime", (req, res) => {
-    res.render("realTimeProducts");
+    res.render("realTimeProducts", { user: req.session.userInfo });
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", showLoginView , (req, res) => {
     res.render("login");
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", showLoginView,  (req, res) => {
     res.render("register");
 });
 
 router.get("/cart", (req, res) => {
-    res.render("cart");
+    res.render("cart", { user: req.session.userInfo });
 });
 
 router.get("/perfil", checkUserAuth, (req, res) => {

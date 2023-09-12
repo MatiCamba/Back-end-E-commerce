@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { usersService } from "../dao/managers/index.js";
+import passport from "passport";
 
 const router = Router();
 
 // Registrar usuarios
-router.post("/register", async (req, res) => {
+router.post("/register", passport.authenticate("signupStrategy", {
+    failureRedirect: "api/sessions/fail-Register"
+}), async (req, res) => {
     
     try {
         const registerForm = req.body;
@@ -22,8 +25,14 @@ router.post("/register", async (req, res) => {
     }
 });
 
+router.get("/fail-Register", (req, res) => {
+    res.send('<p>No se pudo loguear al usuario, <a href="/login">Regresar</a></p>');
+});
+
 // Loguear usuarios
-router.post("/login", async (req, res) => {
+router.post("/login", passport.authenticate("loginStrategy", {
+    failureRedirect: "/api/sessions/fail-Login"
+}), async (req, res) => {
     try {
         const loginForm = req.body;
         console.log(loginForm);
@@ -42,7 +51,7 @@ router.post("/login", async (req, res) => {
                 email: user.email
             };
             //console.log(req.session.user);
-            res.redirect("/perfil");
+            res.redirect("/");
         } else {
             return res.render("login", { error: "Credenciales Invalidas"});
         }
@@ -50,6 +59,10 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         res.render("register", { error: error.message});
     }
+});
+
+router.get("/fail-Login", (req, res) => {
+    res.send('<p>No se pudo loguear al usuario, <a href="/login">Regresar</a></p>');
 });
 
 // Cerrar sesion

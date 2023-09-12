@@ -21,7 +21,7 @@ export class CartMongo {
     // Obtener un carrito por ID
     getCartById = async (cartId) => {
         try {
-            const cart = await this.model.findById(cartId)
+            const cart = await this.model.findById(cartId).lean();
             return cart;
         } catch (err) {
             console.error('Error al obtener el carrito por ID:', err.message);
