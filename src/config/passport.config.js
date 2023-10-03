@@ -1,7 +1,7 @@
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import { createHash, isValidPassword } from "../utils.js";
-import { usersService } from "../dao/managers/index.js";
+import { usersDao } from "../dao/managers/index.js";
 
 export const initializePassport = ()=>{
     // Configurar la estrategia de registro
@@ -15,7 +15,7 @@ export const initializePassport = ()=>{
             try {
                 const {first_name, Last_name, age} = req.body;
                 // Verificar si el usuario ya está registrado
-                const user = await usersService.getUserByEmail(username);
+                const user = await usersDao.getUserByEmail(username);
                 if(user){
                     return done(null, false)
                 }
@@ -26,7 +26,7 @@ export const initializePassport = ()=>{
                     last_name:Last_name,
                     age:age
                 }
-                const userCreated = await usersService.saveUser(newUser);
+                const userCreated = await usersDao.saveUser(newUser);
                 return done(null,userCreated)// En este punto, passport completa el proceso exitosamente
             } catch (error) {
                 return done(error)
@@ -42,7 +42,7 @@ export const initializePassport = ()=>{
         async(username, password, done)=>{
             try {
                 // Verificar si el usuario está registrado
-                const user = await usersService.getUserByEmail(username);
+                const user = await usersDao.getUserByEmail(username);
                 if(!user){
                     return done(null, false)
                 }
@@ -64,7 +64,7 @@ export const initializePassport = ()=>{
     });
 
     passport.deserializeUser(async(id,done)=>{
-        const user = await usersService.getUserById(id);
+        const user = await usersDao.getUserById(id);
         done(null,user) // req.user ---> sesiones req.sessions.user
     });
 };

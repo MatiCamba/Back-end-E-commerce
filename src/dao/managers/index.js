@@ -8,13 +8,13 @@ import { UsersMongo } from "./mongo/usersMongo.js";
 
 //Persistencia de Archivos
 //const productsService = new ProductManager(config.fileSystem.prdoductsFile);
-//const cartService = new CartManager(config.fileSystem.cartsFile);
+//const cartDao = new CartManager(config.fileSystem.cartsFile);
 
 //Persistencia de Mongo
 connectDB();
-const productsService = new ProductsMongo();
-const cartService = new CartMongo();
-const usersService = new UsersMongo();
+const productsDao = new ProductsMongo();
+const cartDao = new CartMongo();
+const usersDao = new UsersMongo();
 
 
-export {productsService, cartService, usersService};
+export {productsDao, cartDao, usersDao};
