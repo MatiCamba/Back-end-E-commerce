@@ -31,7 +31,7 @@ export class UsersMongo {
     async getUserByEmail(email){
         try {
             //console.log(email);
-            const user = await this.model.findOne({email: email});
+            const user = await this.model.findOne({email: email}).lean();
             //console.log(user);
             if(!user){
                 return null;
@@ -45,7 +45,7 @@ export class UsersMongo {
     //actualizar el usuario
     async updateUser(id, user){
         try {
-            return await this.model.findByIdAndUpdate(id, user);
+            return await this.model.findByIdAndUpdate(id, user, {new: true});
             
         } catch (error) {
             throw new Error("Hubo un error al actualizar el usuario", error.message);

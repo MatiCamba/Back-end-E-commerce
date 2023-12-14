@@ -1,9 +1,10 @@
-import { productsDao } from "../dao/managers/index.js";
+
+import { ProductsService } from "../services/products.service.js";
 
 export class ProductsController {
     static getProducts = async (req, res) => {
         try {
-            const result = await productsDao.getProducts();
+            const result = await ProductsService.getProducts();
             if (req.query.limit) {
                 result = result.slice(0, req.query.limit);
                 return res.send(result);
@@ -17,7 +18,7 @@ export class ProductsController {
 
     static getProductById = async (req, res) => {
         try {
-            const result = await productsDao.getProductById(parseInt(req.params.pid));
+            const result = await ProductsService.getProductById(req.params.pid);
             res.send(result);
         } catch (error) {
             res.send(error.message);
@@ -26,7 +27,7 @@ export class ProductsController {
 
     static addProduct = async (req, res) => {
         try {
-            const result = await productsDao.addProduct(req.body);
+            const result = await ProductsService.addProduct(req.body);
             res.json({ status: "OK", data: result });
         } catch (error) {
             res.send(error.message);
@@ -37,7 +38,7 @@ export class ProductsController {
         try {
             let pid = req.params.pid;
             let product = req.body;
-            let result = await productsDao.updateProduct(pid, product);
+            let result = await ProductsService.updateProduct(pid, product);
             if (result) {
                 result.id = pid;
                 res.json({ status: 'success', data: result });
@@ -51,7 +52,7 @@ export class ProductsController {
 
     static deleteProduct = async (req, res) => {
         try {
-            const deletedProduct = await productsDao.deleteProduct(req.params.pid);
+            const deletedProduct = await ProductsService.deleteProduct(req.params.pid);
             if (deletedProduct !== null) {
             res.json({ status: "OK", data: deletedProduct });
             } else {

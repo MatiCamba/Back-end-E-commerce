@@ -17,4 +17,4 @@ const cartDao = new CartMongo();
 const usersDao = new UsersMongo();
 
 
-export {productsDao, cartDao, usersDao};
+export { productsDao, cartDao, usersDao };

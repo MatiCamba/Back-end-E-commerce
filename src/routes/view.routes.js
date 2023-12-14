@@ -19,4 +19,6 @@ router.get("/cart", ViewsController.renderCart);
 
 router.get("/perfil", checkUserAuth, ViewsController.renderProfile);
 
+//router.get("/products", ViewsController.renderProducts);
+
 export { router as viewRouter };

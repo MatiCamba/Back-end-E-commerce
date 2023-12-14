@@ -1,9 +1,10 @@
-import { cartDao, productsDao } from '../dao/managers/index.js';
+import { CartsService } from '../services/Carts.Service.js';
+import { ProductsService } from '../services/products.service.js';
 
 export class CartsControllers {
     static getCarts = async (req, res) => {
         try {
-            const carrito = await cartDao.getCarts();
+            const carrito = await CartsService.getCarts();
             res.json({ carrito });
         } catch (error) {
             res.status(500).send({ status: 'error', message: error.message });
@@ -13,7 +14,7 @@ export class CartsControllers {
     static getCartById = async (req, res) => {
         try {
             const { cid } = req.params;
-            const cart = await cartDao.getCartById(cid);
+            const cart = await CartsService.getCartById(cid);
             res.json({ status: 'success', cart });
         } catch (error) {
             res.status(500).send({ status: 'error', message: error.message });
@@ -30,7 +31,7 @@ export class CartsControllers {
             const validProducts = [];
     
             for (const product of products) {
-                const checkId = await productsDao.getProductById(product._id);
+                const checkId = await ProductsService.getProductById(product._id);
     
                 if (!checkId) {
                     return res.status(404).send({ error: `El producto ${product._id} no existe` });
@@ -38,7 +39,7 @@ export class CartsControllers {
                 validProducts.push(checkId);
             }
     
-            const newCart = await cartDao.addCart(validProducts);
+            const newCart = await CartsService.addCart(validProducts);
             res.status(201).send(newCart);
         } catch (error) {
             res.status(500).send(error);
@@ -50,13 +51,13 @@ export class CartsControllers {
         const { quantity } = req.body;
 
         try {
-            const validProduct = await productsDao.getProductById(pid);
+            const validProduct = await ProductsService.getProductById(pid);
 
             if(!validProduct){
                 return res.status(404).send({error: `El producto ${pid} no existe`});
             }
 
-            const cart = await cartDao.addProductToCart(cid, {_id: pid, quantity});
+            const cart = await CartsService.addProductToCart(cid, pid, quantity);
             console.log(cart);
             return res.status(201).send({message: "Producto agregado al carrito", cart});
         } catch (error) {
@@ -70,14 +71,14 @@ export class CartsControllers {
         const { products } = req.body;
         try {
             for( const product of products){
-                const checkId = await productsDao.getProductById(product.id);
+                const checkId = await ProductsService.getProductById(product.id);
 
             if(!checkId){
                 return res.status(404).send({error: `El producto ${product.id} no existe`});
                 }
             }
 
-            const updatedCart = await cartDao.updateCart(cid, products);
+            const updatedCart = await CartsService.updateCart(cid, products);
             return res.status(201).send({ status: 'success', message: "Carrito actualizado", payload: updatedCart });
         } catch (error) {
             console.log(error)
@@ -88,7 +89,7 @@ export class CartsControllers {
     static deleteProductFromCart = async (req, res) => {
         const { cid, pid } = req.params;
         try {
-            const checkIdProduct= await productsDao.getProductById(pid);
+            const checkIdProduct= await ProductsService.getProductById(pid);
             if(!checkIdProduct){
                 return res.status(404).send({error: `El producto ${pid} no existe`});
             }
@@ -100,7 +101,7 @@ export class CartsControllers {
 
             checkIdProduct.products.splice(findProduct, 1);
 
-            const updatedCart = await cartDao.updateCart(cid, checkIdProduct.products);
+            const updatedCart = await CartsService.updateOneProduct(cid, checkIdProduct.products);
 
             return res.status(201).send({ status: 'success', message: "Producto eliminado", cart: updatedCart });
         } catch (error) {
@@ -111,7 +112,7 @@ export class CartsControllers {
     static deleteCart = async (req, res) => {
         try {
             const { cid } = req.params;
-            const cart = await cartDao.getCartById(cid);
+            const cart = await CartsService.getCartById(cid);
     
             if(!cart){
                 return res.status(404).send({error: `El carrito ${cid} no existe`});
@@ -123,7 +124,7 @@ export class CartsControllers {
     
             cart.products = [];
     
-            await cartDao.updateOneProduct(cid, cart.products);
+            await CartsService.updateCart(cid, cart.products);
             return res.status(201).send({ status: 'success', message: "Carrito eliminado", cart: cart });
     
         } catch (error) {
