@@ -1,24 +1,27 @@
 import { Router } from "express";
 import passport from "passport";
+//importar el controlador de Sessions
 import { SessionsController } from "../controllers/sessions.controller.js";
+import { uploaderProfile } from "../utils.js";
 
-const router = Router();
+const router  = Router();
+//req.file
+router.post("/signup", uploaderProfile.single("avatar") , passport.authenticate("signupStrategy", {
+    failureRedirect:"/api/sessions/fail-signup"
+}), SessionsController.redirectLogin);
 
-// Registrar usuarios
-router.post("/register", passport.authenticate("signupStrategy", {
-    failureRedirect: "api/sessions/fail-Register"
-}), SessionsController.renderRegister);
+router.get("/fail-signup", SessionsController.failSignup);
 
-router.get("/fail-Register", SessionsController.renderRegisterFail);
-
-// Loguear usuarios
 router.post("/login", passport.authenticate("loginStrategy", {
-    failureRedirect: "/api/sessions/fail-Login"
-}), SessionsController.renderLogin);
+    failureRedirect:"/api/sessions/fail-login"
+}), SessionsController.renderProfile);
 
-router.get("/fail-Login", SessionsController.renderLoginFail);
+router.get("/fail-login", SessionsController.failLogin);
 
-// Cerrar sesion
-router.get("/logout", SessionsController.renderLogout);
+router.post("/forgot-password", SessionsController.forgotPassword);
 
-export {router as sessionRouter};
+router.post("/reset-password", SessionsController.resetPassword);
+
+router.get("/logout", SessionsController.logout);
+
+export {router as sessionsRouter};

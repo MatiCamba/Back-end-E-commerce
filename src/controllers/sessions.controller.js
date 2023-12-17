@@ -1,89 +1,73 @@
-import { usersDao } from "../dao/managers/index.js";
+import { UsersService } from "../services/users.service.js"; 
+import { generateEmailToken, recoveryEmail } from "../helpers/gmail.js";
+import { validateToken, createHash } from "../utils.js" 
 
-export class SessionsController {
-    // Método para manejar el registro de usuarios
-    static renderRegister = async (req, res) => {
-        try {
-            // Recogemos los datos del formulario de registro
-            const registerForm = req.body;
-            //console.log(registerForm);
-
-            // Verificamos si el usuario ya está registrado
-            const user = await usersDao.getUserByEmail(registerForm.email);
-            if(user){
-                // Si el usuario ya está registrado, mostramos un error
-                return res.render("register", { error: "El usuario ya esta registrado"});
-            }
-
-            // Si el usuario no está registrado, lo guardamos en la base de datos
-            const newUser = await usersDao.saveUser(registerForm);
-
-            // Redirigimos al usuario a la página de inicio de sesión con un mensaje de éxito
-            return res.render("login", { message: "Usuario Creado con exito"});
-        } catch (error) {
-            // Si hay un error, lo mostramos en la página de registro
-            return res.render("register", { error: error.message});
-        }
+export class SessionsController{
+    static redirectLogin = (req,res)=>{
+        res.redirect("/login");
     };
 
-    // Método para manejar el fallo en el registro
-    static renderRegisterFail = (req, res) => {
-        res.send('<p>No se pudo loguear al usuario, <a href="/login">Regresar</a></p>');
+    static failSignup = (req,res)=>{
+        res.send("<p>No se pudo registrar al usuario, <a href='/registro'>intenta de nuevo</a></p>");
     };
 
-    // Método para manejar el inicio de sesión de usuarios
-    static renderLogin = async (req, res) => {
-        try {
-            // Recogemos los datos del formulario de inicio de sesión
-            const loginForm = req.body;
-            //console.log(loginForm);
+    static renderProfile = (req,res)=>{
+        const user = req.user;
+        //console.log("user", user);
+        res.render("profile",{user});
+    };
 
-            // Verificamos si el usuario está registrado
-            const user = await usersDao.getUserByEmail(loginForm.email);
+    static failLogin = (req,res)=>{
+        res.send("<p>No se pudo loguear al usuario, <a href='/login'>intenta de nuevo</a></p>");
+    };
+
+    static forgotPassword = async(req,res)=>{
+        try {
+            const {email} = req.body;
+            const user = await UsersService.getUserByEmail(email);
             if(!user){
-                // Si el usuario no está registrado, mostramos un error
-                return res.render("login", { error: "El usuario no esta registrado"});
+                return res.json({status:"error", message:"No es posible restablecer la constraseña"});
             }
-
-            // Si el usuario está registrado, validamos la contraseña
-            if(user.password === loginForm.password){
-                console.log(user.password, loginForm.password);
-                // Si la contraseña es correcta, creamos la sesión
-                req.session.userInfo = {
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    email: user.email
-                };
-                console.log(req.session.userInfo);
-
-                // Redirigimos al usuario a la página principal
-                res.redirect("/");
-            } else {
-                // Si la contraseña no es correcta, mostramos un error
-                return res.render("login", { error: "Credenciales Invalidas"});
-            }
-            
+            //generamos el token con el link para este usuario
+            const token = generateEmailToken(email,3*60); //token de 3 min.
+            //Enviar el mensaje al usuario con el enlace
+            await recoveryEmail(req,email,token);
+            res.send("Correo enviado, volver al home");
         } catch (error) {
-            // Si hay un error, lo mostramos en la página de registro
-            res.render("register", { error: error.message});
+            res.json({status:"error", message:"No es posible restablecer la constraseña"});
         }
     };
 
-    // Método para manejar el fallo en el inicio de sesión
-    static renderLoginFail = (req, res) => {
-        // Mostramos un mensaje de error y un enlace para volver a la página de inicio de sesión
-        res.send('<p>No se pudo loguear al usuario, <a href="/login">Regresar</a></p>');
+    static resetPassword = async(req,res)=>{
+        try {
+            const token = req.query.token;
+            const {newPassword} = req.body;
+            const validEmail = validateToken(token);
+            if(validEmail){//token correcto
+                const user = await UsersService.getUserByEmail(validEmail);
+                if(user){
+                    user.password = createHash(newPassword);
+                    await UsersService.updateUser(user._id,user);
+                    res.send("Contraseña actualizada <a href='/login'>Ir al login</a>")
+                }
+            } else {
+                return res.send("El token ya caduco, volver a intentarlo <a href='/forgot-password'>Restablecer contraseña</a>");
+            }
+        } catch (error) {
+            res.send("No se pudo restablecer la contraseña, volver a intentarlo <a href='/forgot-password'>Restablecer contraseña</a>");
+        }
     };
 
-    // Método para manejar el cierre de sesión de usuarios
-    static renderLogout = (req, res) => {
-        // Destruimos la sesión
-        req.session.destroy(error=>{
-            // Si hay un error, lo mostramos en la página de perfil
-            if(error) return res.render("profile", { user: req.session.user, error });
-
-            // Si no hay errores, redirigimos al usuario a la página principal
-            res.redirect("/");
-        });
-    };
+    static logout = async(req,res)=>{
+        try {
+            const user = req.user;
+            user.last_connection= new Date();
+            await UsersService.updateUser(user._id, user);
+            await req.session.destroy();
+            res.json({status:"success", message:"sesion finalizada"});
+        } catch (error) {
+            console.log(error);
+            res.json({status:"error", message:"No se pudo cerrar la sesion"});
+        }
+    }
 };

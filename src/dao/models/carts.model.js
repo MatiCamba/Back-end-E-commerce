@@ -4,21 +4,20 @@ import { cartCollection } from "../../constants/index.js";
 
 // Creamos el esquema
 const cartSchema = new mongoose.Schema({
-    products: {
-        type:[
+    products:{
+        type:[//tipo array
             {
-                _id: {
-                    type: mongoose.Schema.Types.ObjectId,
-
-                    ref: 'products',
+                quantity:{
+                    type:Number,
+                    default:1
                 },
-                quantity: {
-                    type: Number,
-                    default: 1,
+                productId:{//cada elemento es de tipo objeto, y contiene el id de un documento que pertenece a la coleccion "products"
+                    type:mongoose.Types.ObjectId,
+                    ref:"products"
                 }
             }
         ],
-        default: []
+        default:[]
     }
 });
 // middleware de la coleccion

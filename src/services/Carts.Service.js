@@ -13,7 +13,7 @@ export class CartsService {
   }
 
   static addCart = async () => {
-    const newCart = await cartDao.addCart();
+    const newCart = await cartDao.addCart( );
     return newCart;
   }
 

@@ -2,135 +2,102 @@ import { CartsService } from '../services/Carts.Service.js';
 import { ProductsService } from '../services/products.service.js';
 
 export class CartsControllers {
+    // Obtener todos los carritos
     static getCarts = async (req, res) => {
         try {
             const carrito = await CartsService.getCarts();
             res.json({ carrito });
         } catch (error) {
-            res.status(500).send({ status: 'error', message: error.message });
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
 
+    // Obtener un carrito por ID
     static getCartById = async (req, res) => {
         try {
             const { cid } = req.params;
             const cart = await CartsService.getCartById(cid);
             res.json({ status: 'success', cart });
         } catch (error) {
-            res.status(500).send({ status: 'error', message: error.message });
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
 
+    // Agregar un carrito
     static addCart = async (req, res) => {
         try {
             const { products } = req.body;
-            //console.log(products);
             if (!Array.isArray(products)) {
                 return res.status(400).send({ error: "El campo products debe ser un array" });
             }
-            const validProducts = [];
-    
-            for (const product of products) {
-                const checkId = await ProductsService.getProductById(product._id);
-    
-                if (!checkId) {
-                    return res.status(404).send({ error: `El producto ${product._id} no existe` });
-                }
-                validProducts.push(checkId);
-            }
-    
+            const validProducts = await ProductsService.getProductsByIds(products.map(product => product._id));
             const newCart = await CartsService.addCart(validProducts);
             res.status(201).send(newCart);
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
 
+    // Agregar un producto a un carrito
     static addProductToCart = async (req, res) => {
         const { cid, pid } = req.params;
-        const { quantity } = req.body;
-
         try {
             const validProduct = await ProductsService.getProductById(pid);
-
             if(!validProduct){
                 return res.status(404).send({error: `El producto ${pid} no existe`});
             }
-
-            const cart = await CartsService.addProductToCart(cid, pid, quantity);
-            console.log(cart);
+            const cart = await CartsService.addProductToCart(cid, pid);
             return res.status(201).send({message: "Producto agregado al carrito", cart});
         } catch (error) {
-            console.log(error);
-            return res.status(500).send({message: error.message});
+            return res.status(500).send({message: 'Error interno del servidor'});
         }
     };
 
+    // Actualizar un carrito
     static updateCart = async (req, res) => {
         const { cid } = req.params;
         const { products } = req.body;
         try {
-            for( const product of products){
-                const checkId = await ProductsService.getProductById(product.id);
-
-            if(!checkId){
-                return res.status(404).send({error: `El producto ${product.id} no existe`});
-                }
-            }
-
-            const updatedCart = await CartsService.updateCart(cid, products);
+            const validProducts = await ProductsService.getProductsByIds(products.map(product => product.id));
+            const updatedCart = await CartsService.updateCart(cid, validProducts);
             return res.status(201).send({ status: 'success', message: "Carrito actualizado", payload: updatedCart });
         } catch (error) {
-            console.log(error)
-            return res.status(500).send({ status: 'error', message: error.message });
+            return res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
 
+    // Eliminar un producto de un carrito
     static deleteProductFromCart = async (req, res) => {
         const { cid, pid } = req.params;
         try {
-            const checkIdProduct= await ProductsService.getProductById(pid);
-            if(!checkIdProduct){
-                return res.status(404).send({error: `El producto ${pid} no existe`});
+            const cart = await CartsService.getCartById(cid);
+            if(!cart){
+                return res.status(404).send({error: `El carrito ${cid} no existe`});
             }
-
-            const findProduct = checkIdProduct.products.findIndex((product) => product._id.toString() === pid);
-            if(findProduct === -1){
-                return res.status(404).send({error: `El producto ${pid} no existe`});
+            const productIndex = cart.products.findIndex((product) => product._id.toString() === pid);
+            if(productIndex === -1){
+                return res.status(404).send({error: `El producto ${pid} no existe en el carrito`});
             }
-
-            checkIdProduct.products.splice(findProduct, 1);
-
-            const updatedCart = await CartsService.updateOneProduct(cid, checkIdProduct.products);
-
+            cart.products.splice(productIndex, 1);
+            const updatedCart = await CartsService.updateCart(cid, cart.products);
             return res.status(201).send({ status: 'success', message: "Producto eliminado", cart: updatedCart });
         } catch (error) {
-            return res.status(500).send({ status: 'error', message: error.message });
+            return res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
 
+    // Eliminar un carrito
     static deleteCart = async (req, res) => {
         try {
             const { cid } = req.params;
             const cart = await CartsService.getCartById(cid);
-    
             if(!cart){
                 return res.status(404).send({error: `El carrito ${cid} no existe`});
             }
-    
-            if(cart.products.length === 0){
-                return res.status(404).send({error: `El carrito ${cid} no tiene productos`});
-            }
-    
-            cart.products = [];
-    
-            await CartsService.updateCart(cid, cart.products);
-            return res.status(201).send({ status: 'success', message: "Carrito eliminado", cart: cart });
-    
+            await CartsService.deleteCart(cid);
+            return res.status(201).send({ status: 'success', message: "Carrito eliminado" });
         } catch (error) {
-            console.log(error);
-            return res.status(500).send({ status: 'error', message: error.message });
+            return res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }
     };
-
-}; 
+};

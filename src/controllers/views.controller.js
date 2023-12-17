@@ -8,7 +8,7 @@ export class ViewsController {
             const {limit=10, page=1, stock, sort="asc"} = req.query;
             const stockValue = stock === 0 ? undefined : parseInt(stock);
             if(!["asc","desc"].includes(sort)) {
-                return res.render("home", { products: products }, {error: "El campo sort debe ser asc o desc"});
+                return res.render("home", { error: "El campo sort debe ser asc o desc", user: req.session.userInfo });
             };
             const sortValue = sort === "asc" ? 1 : -1;
             let query = {};
@@ -16,7 +16,6 @@ export class ViewsController {
                 query = {stock: {$gte:stockValue}};
             }
             const result = await productManager.getProductsByPage(query, {page, limit, sort:{price:sortValue}, lean:true });
-            //console.log(result);
     
             const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`
             const resultProductsView = {
@@ -31,12 +30,10 @@ export class ViewsController {
                 hasNextPage: result.hasNextPage,
                 nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
             }
-            //console.log(resultProductsView);
     
             res.render("home", {...resultProductsView, user: req.session.userInfo});
         } catch (error) {
-            const products = await productManager.getProducts();
-            res.render("home", { products } , {user: req.session.userInfo});
+            res.render("home", { error: error.message, user: req.session.userInfo });
         }
     };
 
@@ -49,7 +46,7 @@ export class ViewsController {
     };
 
     static renderRegister = async (req, res) => {
-        res.render("register", { user: req.session.userInfo });
+        res.render("signup", { user: req.session.userInfo });
     };
 
     static renderCart = async (req, res) => {

@@ -1,18 +1,24 @@
-
 import { ProductsService } from "../services/products.service.js";
 
 export class ProductsController {
     static getProducts = async (req, res) => {
         try {
-            const result = await ProductsService.getProducts();
+            let result = await ProductsService.getProducts();
             if (req.query.limit) {
                 result = result.slice(0, req.query.limit);
-                return res.send(result);
-            } else {
-                res.send(result);
             }
+            res.send(result);
         } catch (error) {
-            res.send(error.message);
+            res.status(500).send(error.message);
+        }
+    };
+
+    static getProduct = async(req,res)=>{
+        try {
+            const result = await ProductsService.getProduct(req.params.pid);
+            res.send(result);
+        } catch (error) {
+            res.status(500).send(error.message);
         }
     };
 
@@ -21,7 +27,20 @@ export class ProductsController {
             const result = await ProductsService.getProductById(req.params.pid);
             res.send(result);
         } catch (error) {
-            res.send(error.message);
+            res.status(500).send(error.message);
+        }
+    };
+
+    static createProduct = async(req,res)=>{
+        //Agregar el producto
+        try {
+            const productInfo = req.body;
+            productInfo.owner = req.user._id;
+            productInfo.thumbnail = req.file.filename;
+            const productCreated = await ProductsService.createProduct(productInfo);
+            res.json({status:"success", data:productCreated, message:"producto creado"});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
         }
     };
 
@@ -30,7 +49,7 @@ export class ProductsController {
             const result = await ProductsService.addProduct(req.body);
             res.json({ status: "OK", data: result });
         } catch (error) {
-            res.send(error.message);
+            res.status(500).send(error.message);
         }
     };
 
@@ -42,11 +61,11 @@ export class ProductsController {
             if (result) {
                 result.id = pid;
                 res.json({ status: 'success', data: result });
-                } else {
+            } else {
                 res.status(404).json({ error: 'El producto no existe' });
-            };
+            }
         } catch (error) {
-            res.json({ status: 'error', message: error.message });
+            res.status(500).json({ status: 'error', message: error.message });
         }
     };
 
@@ -54,12 +73,12 @@ export class ProductsController {
         try {
             const deletedProduct = await ProductsService.deleteProduct(req.params.pid);
             if (deletedProduct !== null) {
-            res.json({ status: "OK", data: deletedProduct });
+                res.json({ status: "OK", data: deletedProduct });
             } else {
-            res.status(404).json({ error: "El producto no existe" });
-            };
+                res.status(404).json({ error: "El producto no existe" });
+            }
         } catch (error) {
-            res.json({ status: 'error', message: error.message });
+            res.status(500).json({ status: 'error', message: error.message });
         }
     };
 };

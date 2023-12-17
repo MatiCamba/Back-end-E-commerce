@@ -16,6 +16,14 @@ export class ProductsMongo {
         }
     };
 
+    async getProducts(query) {
+        try {
+            return this.model.find(query);
+        } catch (error) {
+            throw new Error("Hubo un error al obtener los productos", error.message);
+        }
+    };
+
     // obtner x productos por paginacion
     async getProductsByPage(query, options) {
         try {
@@ -35,16 +43,34 @@ export class ProductsMongo {
         }
     };
 
+    // obtener varios productos por sus IDs
+    async getProductsByIds(ids) {
+        try {
+            return await this.model.find({ _id: { $in: ids } });
+        }
+        catch (error) {
+            throw new Error("Hubo un error al obtener los productos", error.message);
+        }
+    };
+
     // agregar un producto
     async addProduct(product) {
         try {
             const productCreated = await this.model.create(product);
-            console.log(productCreated);
             return productCreated;
         } catch (error) {
-            console.log(error);
+            throw new Error("Hubo un error al agregar el producto", error.message);
         }
     };
+
+    async createProduct(product) {
+        try {
+            return await this.model.create(product);
+        }
+        catch (error) {
+            throw new Error("Hubo un error al crear el producto", error.message);
+        }
+    }
 
     // actualizar un producto
     async updateProduct(id, product) {
@@ -62,7 +88,7 @@ export class ProductsMongo {
             return await this.model.findByIdAndDelete(id);
         }
         catch (error) {
-            console.log(error);
+            throw new Error("Hubo un error al eliminar el producto", error.message);
         }
     };
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import { config } from './config/config.js';
+import { connectDB } from './config/dbConnection.js';
 import { engine } from 'express-handlebars';
 import path from 'path';
 import { __dirname } from './utils.js';
@@ -14,13 +15,13 @@ import MongoStore from 'connect-mongo';
 import { productsRoute } from './routes/products.routes.js';
 import { cartsRoute } from './routes/carts.routes.js';
 import { viewRouter } from './routes/view.routes.js';
-import { sessionRouter } from './routes/sessions.routes.js';
+import { sessionsRouter } from './routes/sessions.routes.js';
 import { ProductsMongo } from './dao/managers/mongo/productsMongo.js';
+import { usersRouter } from './routes/users.routes.js';
 import { CartMongo } from './dao/managers/mongo/cartMongo.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
-
 
 const puerto = config.server.port;
 // Crea una aplicación Express
@@ -31,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Sirve archivos estáticos desde el directorio 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // Configura Handlebars como el motor de vistas
 app.engine('.hbs', engine({ extname: '.hbs' }));
@@ -109,11 +110,12 @@ servidorSocket.on("connection", async (socket) => {
     })
 });
 
-// Rutas
-app.use("/api/productos", productsRoute);
-app.use("/api/carritos", cartsRoute);
-app.use("/api/sessions", sessionRouter);
+//routes
 app.use(viewRouter);
+app.use("/api/products", productsRoute);
+app.use("/api/carts", cartsRoute);
+app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", usersRouter);
 
 
 
