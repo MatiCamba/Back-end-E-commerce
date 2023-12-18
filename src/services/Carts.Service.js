@@ -18,7 +18,7 @@ export class CartsService {
   }
 
   static addCart = async () => {
-    const newCart = await cartDao.addCart( );
+    const newCart = await cartDao.addCart();
     return newCart;
   }
 
@@ -46,5 +46,5 @@ export class CartsService {
     const deletedCart = await cartDao.deleteCart(cid);
     return deletedCart;
   }
-  
+
 };
