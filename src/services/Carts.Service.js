@@ -7,6 +7,11 @@ export class CartsService {
     return carts;
   }
 
+  static getCart = async () => {
+    const cart = await cartDao.getCart();
+    return cart;
+  }
+
   static getCartById = async (cid) => {
     const cart = await cartDao.getCartById(cid);
     return cart;

@@ -13,7 +13,7 @@ router.get("/realTime", ViewsController.renderRealTimeProducts);
 
 router.get("/login", showLoginView , ViewsController.renderLogin);
 
-router.get("/register", showLoginView, ViewsController.renderRegister);
+router.get("/signup", showLoginView, ViewsController.renderRegister);
 
 router.get("/cart", ViewsController.renderCart);
 

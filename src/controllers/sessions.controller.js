@@ -3,24 +3,29 @@ import { generateEmailToken, recoveryEmail } from "../helpers/gmail.js";
 import { validateToken, createHash } from "../utils.js" 
 
 export class SessionsController{
+    // Redirige al usuario al login
     static redirectLogin = (req,res)=>{
         res.redirect("/login");
     };
 
+    // Redirige al usuario al signup
     static failSignup = (req,res)=>{
         res.send("<p>No se pudo registrar al usuario, <a href='/registro'>intenta de nuevo</a></p>");
     };
 
+    // Redirige al usuario al profile
     static renderProfile = (req,res)=>{
         const user = req.user;
         //console.log("user", user);
         res.render("profile",{user});
     };
 
+    // Redirige al usuario al login
     static failLogin = (req,res)=>{
         res.send("<p>No se pudo loguear al usuario, <a href='/login'>intenta de nuevo</a></p>");
     };
 
+    
     static forgotPassword = async(req,res)=>{
         try {
             const {email} = req.body;
@@ -64,10 +69,12 @@ export class SessionsController{
             user.last_connection= new Date();
             await UsersService.updateUser(user._id, user);
             await req.session.destroy();
-            res.json({status:"success", message:"sesion finalizada"});
+            res.redirect('/'); // Redirige al usuario a la página de inicio
+            //res.json({status:"success", message:"sesion finalizada"});
         } catch (error) {
             console.log(error);
             res.json({status:"error", message:"No se pudo cerrar la sesion"});
         }
     }
 };
+

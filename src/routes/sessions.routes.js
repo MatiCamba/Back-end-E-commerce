@@ -18,8 +18,13 @@ router.post("/login", passport.authenticate("loginStrategy", {
 
 router.get("/fail-login", SessionsController.failLogin);
 
+router.get("/forgot-password", (req, res) => {
+    res.render('forgot-password');
+});
+
 router.post("/forgot-password", SessionsController.forgotPassword);
 
+router.get("/reset-password", SessionsController.resetPassword);
 router.post("/reset-password", SessionsController.resetPassword);
 
 router.get("/logout", SessionsController.logout);

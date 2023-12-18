@@ -6,7 +6,7 @@ export class CartsControllers {
     static getCarts = async (req, res) => {
         try {
             const carrito = await CartsService.getCarts();
-            res.json({ carrito });
+            res.render('cart', { carrito });
         } catch (error) {
             res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
         }

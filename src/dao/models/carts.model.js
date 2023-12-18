@@ -22,7 +22,7 @@ const cartSchema = new mongoose.Schema({
 });
 // middleware de la coleccion
 cartSchema.pre('find', function (next) {
-    this.populate('products._id');
+    this.populate('products.productId');
     next();
 });
 

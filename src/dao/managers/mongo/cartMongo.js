@@ -17,6 +17,17 @@ export class CartMongo {
         }
     };
 
+    // Obtener un carrito
+    getCart = async () => {
+        try {
+            const cart = await this.model.findOne().lean();
+            return cart;
+        } catch (err) {
+            console.error('Error al obtener el carrito:', err.message);
+            return null;
+        }
+    };
+
 
     // Obtener un carrito por ID
     getCartById = async (cartId) => {
