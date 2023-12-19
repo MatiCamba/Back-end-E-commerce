@@ -25,7 +25,7 @@ dotenv.config();
 
 const puerto = config.server.port;
 // Crea una aplicación Express
-const app = express();
+const app = express(); 
 
 // Middleware
 app.use(express.json());
